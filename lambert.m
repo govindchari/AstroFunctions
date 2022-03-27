@@ -1,5 +1,18 @@
 function [v0,v] = lambert(r0,r,dt,tm)
-    mu = 2.9591220828559093e-4;
+    %Lambert solver using univeral variables and bisection
+
+    %INPUTS
+    %   r0 - initial heliocentric position 
+    %   r - final heliocentric position
+    %   dt - transfer time
+    %   tm - binary variable (1 or -1) to indicate long way or short way
+    %   transfer
+
+    %OUTPUTS
+    %   v0 - initial inertial velocity vector to complete transfer
+    %   v - final inertial velocity vector
+
+    mu = 2.9591220828559093e-4; %Sun's gravitational parameter
     flag = false;
 	cn = dot(r0,r)/(norm(r0)*norm(r));
 	sn = tm*sqrt(1-cn^2);

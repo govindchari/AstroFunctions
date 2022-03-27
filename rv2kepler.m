@@ -9,8 +9,6 @@ function [a,e,Omega,I,omega,tp] = rv2kepler(r,v,mu)
 %Outputs:
 %   a - scalar: semi-major axis (infinite for parabolic orbits)
 %   e - scalar: eccentricity
-%   E - scalar: eccentric/parabolic/hyperbolic anomaly (in radians,
-%               range 0 to 2*pi for closed orbits, -pi to pi for open orbits)
 %   I - scalar: inclination (in radians, range 0 to pi)
 %   omega - scalar: argument of periapsis (in radians, range 0 to 2*pi)
 %   Omega - scalar: longitude of the ascending node (in radians, range 0 to
@@ -69,9 +67,7 @@ function [a,e,Omega,I,omega,tp] = rv2kepler(r,v,mu)
         nh=sqrt(-mu/a^3);
         tp=(E+e*((r*sin(nu))/(a*sqrt(e^2-1)))/nh);
     end
-
-
-    %ensure that all relevantangle outputs are in 0, 2*pi
+    %ensure that all relevant angle outputs are in 0, 2*pi
     omega = mod(omega,2*pi);
     Omega = mod(Omega,2*pi);
 end
