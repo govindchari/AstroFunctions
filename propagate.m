@@ -1,4 +1,14 @@
 function [r,v] = propagate(r0,v0,t,mu)
+    % A Keplerian two body propagator that inverts KTE
+    %INPUTS
+    %   r0 - initial position
+    %   v0 - initial velocity
+    %   t - propagation time
+    %   mu - gravitational parameter
+    %OUTPUTS
+    %   r - final position vector
+    %   v - final velocity vector
+
 	[a,e,Omega,I,omega,tp] = rv2kepler(r0,v0,mu);
 	CO = [cos(Omega) sin(Omega) 0;-sin(Omega) cos(Omega) 0;0 0 1];
 	CI = [1 0 0;0 cos(I) sin(I);0 -sin(I) cos(I)];
