@@ -6,10 +6,10 @@ function [r_e,r_v,v_e,v_v] = EarthJupiterPosVel(t0,dt)
 %
 %OUTPUTS
 %   r_e - 3x1 col vector - Heliocentric position of Earth (in AU) at t0
-%   r_v - 3x1 col vector - Heliocentric position of Venus (in AU) at t0+dt
+%   r_v - 3x1 col vector - Heliocentric position of Jupiter (in AU) at t0+dt
 %   v_e - 3x1 col vector - Heliocentric-Inertial velocity of Earth 
 %                          (in AU/day) at t0
-%   v_v - 3x1 col vector - Heliocentric-Inertial velocity of Venus 
+%   v_v - 3x1 col vector - Heliocentric-Inertial velocity of Jupiter 
 %                          (in AU/day) at t0+dt
 
 %Earth and Venus orbital elements
