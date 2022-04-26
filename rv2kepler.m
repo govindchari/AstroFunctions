@@ -1,4 +1,4 @@
-function [a,e,Omega,I,omega,tp] = rv2kepler(r,v,mu) 
+function [a,e,Omega,I,omega,tp,M] = rv2kepler(r,v,mu) 
 
 %Convert orbital position and velocity to orbital elements
 %Inputs:
@@ -52,12 +52,14 @@ function [a,e,Omega,I,omega,tp] = rv2kepler(r,v,mu)
         E=tan(nu/2);
         l=(2*norm(r))/(1+E^2);
         np=2*sqrt(mu/l^3);
-        tp=-(E+E^3/3)/np;
+        M = E+E^3/3;
+        tp=-(M)/np;
     elseif e<1
         nu=mod(nu,2*pi);
         E=atan2(norm(r)*sin(nu)/(a*sqrt(1-e^2)),(a*e+norm(r)*cos(nu))/(a));
         n=sqrt(mu/a^3);
-        tp=(e*sin(E)-E)/n;
+        M = e*sin(E)-E;
+        tp=(M)/n;
         period=2*pi*sqrt(a^3/mu);
         if tp<0
             tp=period+tp;
@@ -65,7 +67,8 @@ function [a,e,Omega,I,omega,tp] = rv2kepler(r,v,mu)
     elseif e>1
         E=asinh(-(norm(r)*sin(nu))/(a*sqrt(e^2-1)));
         nh=sqrt(-mu/a^3);
-        tp=(E+e*((r*sin(nu))/(a*sqrt(e^2-1)))/nh);
+        M = E+e*((r*sin(nu))/(a*sqrt(e^2-1)));
+        tp=(M/nh);
     end
     %ensure that all relevant angle outputs are in 0, 2*pi
     omega = mod(omega,2*pi);
