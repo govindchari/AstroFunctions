@@ -1,14 +1,22 @@
-function [t,z,E] = n_body_integration(mu_list, z0, tspan, dt)
+function [tret,z,E] = n_body_integration(mu_list, z0, tspan, dt, trec)
     %Energy scaled by a factor of G
+    %trec is the recording interval must be greater or equal to dt
     num_bodies = length(z0)/6;
     t = [0:dt:tspan];
-    z = zeros(length(z0),length(t));
-    E = zeros(length(t),1);
+    z = zeros(length(z0),round(length(t)/trec));
+    E = zeros(round(length(t)/trec),1);
     z(:,1) = z0;
+    ztemp = z0;
     E(1) = n_body_energy(z(:,1));
     for k=2:length(t)
-        z(:,k) = propagate_leapfrog(@n_body_force,z(1:3*num_bodies,k-1),z(3*num_bodies+1:6*num_bodies,k-1),dt);
-        E(k) = n_body_energy(z(:,k));
+        ztemp = propagate_leapfrog(@n_body_force,ztemp(1:3*num_bodies),ztemp(3*num_bodies+1:6*num_bodies),dt);
+        Etemp = n_body_energy(ztemp);
+        if (abs(round(t(k)/trec)*trec-t(k)) <= 0.5*dt)
+            idx = round(t(k)/trec);
+            z(:,idx) = ztemp;
+            E(idx) = Etemp;
+            tret(idx) = t(k);
+        end
         if (mod(k,round(length(t)/10)) == 0)
             sprintf('Percent Complete: %g', 10*(k/round(length(t)/10)))
         end
