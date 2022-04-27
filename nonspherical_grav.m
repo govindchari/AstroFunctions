@@ -20,16 +20,21 @@ function f = nonspherical_grav(r,Rb,mu,l_list, m_list, Clm_bar_list, Slm_bar_lis
 
     for l=l_start:l_end
         Plm_list = legendre(l,cos(phi));
+        Plmom_list = legendre(l,cos(phi));
         rBrl = (Rb/norm(r))^l;
         for m=0:l
             idx = (l^2+l-4)/2 + m;
             Plm = Plm_list(m+1);
+            if m<l
+                Plmom = Plmom_list(m+1);
+            else
+                Plmom = 0;
+            end
             Clm = Clm_list(idx);
             Slm = Slm_list(idx);
             dR_dr = dR_dr + rBrl*(l+1)*Plm*(Clm*cos(m*th)+Slm*(sin(m*th)));
             dR_dth = dR_dth + rBrl*m*Plm*(-Clm*sin(m*th)+Slm*cos(m*th));
-            %dR_dphi = dR_dphi + rBrl*(l*cos(phi)*Plm-(l+m)*Plmom)*((Clm*cos(m*th)+Slm*sin(m*th))/(sin(phi)));
-            dR_dphi = dR_dphi + rBrl*(l*cos(phi)*Plm-(l+m)*Plm)*((Clm*cos(m*th)+Slm*sin(m*th))/(sin(phi)));
+            dR_dphi = dR_dphi + rBrl*(l*cos(phi)*Plm-(l+m)*Plmom)*((Clm*cos(m*th)+Slm*sin(m*th))/(sin(phi)));
         end
     end
 
