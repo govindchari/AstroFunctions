@@ -6,9 +6,6 @@ function f = nonspherical_grav(r,Rb,mu,l_list, m_list, Clm_bar_list, Slm_bar_lis
 
     phi = acos(r(3)/norm(r));
     th = atan2(r(2),r(1));
-    %Cth = [cos(th) sin(th) 0;-sin(th) cos(th) 0;0 0 1];
-    %Cphi = [cos(phi) 0 -sin(phi);0 1 0;sin(phi) 0 cos(phi)];
-    %sCg = Cphi*Cth;
     [Clm_list, Slm_list] = unnormalize_legendre(l_list, m_list, Clm_bar_list, Slm_bar_list);
 
     l_start = l_list(1);
@@ -20,7 +17,7 @@ function f = nonspherical_grav(r,Rb,mu,l_list, m_list, Clm_bar_list, Slm_bar_lis
 
     for l=l_start:l_end
         Plm_list = legendre(l,cos(phi));
-        Plmom_list = legendre(l,cos(phi));
+        Plmom_list = legendre(l-1,cos(phi));
         rBrl = (Rb/norm(r))^l;
         for m=0:l
             idx = (l^2+l-4)/2 + m;
@@ -43,7 +40,7 @@ function f = nonspherical_grav(r,Rb,mu,l_list, m_list, Clm_bar_list, Slm_bar_lis
     dR_dphi = (mu/norm(r))*dR_dphi;
 
     rho = norm(r(1:2));
-    f1 = (r(1)/norm(r))*(dR_dr+r(3)/(norm(r)*rho)) - (r(2)/rho^2)*dR_dth;
+    f1 = (r(1)/norm(r))*(dR_dr+(r(3)/(norm(r)*rho))*dR_dphi) - (r(2)/rho^2)*dR_dth;
     f2 = (r(1)/rho^2)*dR_dth + (r(2)/norm(r))*(dR_dr + (r(3)/(norm(r)*rho))*dR_dphi);
     f3 = (r(3)/norm(r))*dR_dr - (rho/norm(r)^2)*dR_dphi;
     f = [f1;f2;f3];
